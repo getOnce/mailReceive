@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>仿邮箱收件人输入框</title>
+	<link rel="stylesheet" href="css/system.css"/>
+	<script src="js/lib/jquery-1.10.2.min.js"></script>
+	<script src="js/lib/require.js"></script>
+</head>
+<body>
+	<div class="Factory-wrap js-factory">
+		<h3 class="f16 p_trb10">
+			<span>
+				上下键来选择联想内容(输入“w”来展示联想内容)
+			</span>
+		</h3>
+		<div class="Factory-box clearfix">
+			<span class="tagItem" data-id="1">标签1</span>
+			<span class="tagItem" data-id="2">标签2</span>
+			<span class="tagFactory js-factory-inputBox">
+				<input type="text" class="tagInput js-factory-input"/>
+				<em class="tagInShadow"><i></i></em>
+				<ul class="tagList">
+					<li>上下键和回车,选择tag</li>
+				</ul>
+			</span>
+		</div>
+	</div>
+	<script>
+	require(['js/component/Factory'],function(F) {
+		$.extend($.fn,{
+			f:function(){
+				$(this).each(function(){
+					var $t = $(this);
+					new F({
+						dom:$t,
+						//配置联想数据
+						url:"www.getdata.com",
+						//测试数据
+						testData:{
+							error_code:0,
+							data:{
+								keyword:'w',
+								list:[
+									{
+										key:3,
+										value:"标签3"
+									},
+									{
+										key:4,
+										value:"标签4"
+									},
+									{
+										key:5,
+										value:"标签5"
+									}
+								]
+							}
+						}
+					});
+				})
+			}
+		});
+		$(".js-factory").f();
+	})
+	</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

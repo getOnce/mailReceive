@@ -1,0 +1,48 @@
+.p10{padding: 10px;}
+.pb10{padding-bottom: 10px;}
+.p_trb10{padding: 10px 10px 10px 0;}
+em,i{font-style: normal;}
+ul,li{list-style: none;padding: 0;}
+input,textarea{border: solid 1px #ececec;}
+/*配置城市tag信息*/
+.clear {clear:both;height:0;overflow:hidden;}
+.clearfix:after {visibility:hidden;display:block;font-size:0;content:" ";clear:both;height:0;}
+.clearfix {zoom:1;}
+.Factory-wrap input{outline:0px;}
+.Factory-wrap{padding: 10px 20px 40px 20px;background-color: #fff;}
+.Factory-box{padding: 10px 5px 10px 5px;border:solid 2px #f0f0f0;line-height: 30px;}
+.Factory-box .tagItem{white-space: nowrap;background-color: #d3e7fa;float:left;
+	overflow: hidden;padding: 0 10px; border-radius: 2px;margin: 0 5px;}
+.Factory-box .delete{background-color:#ee6459;color: #fff;}	
+.Factory-box .tagFactory{position: relative;float:left;
+	display: inline-block;white-space: nowrap;margin-right: -1px;}
+.Factory-box .tagInput{border: none;width: 100%;position: absolute;left:0;top:0;z-index: 1;height: 30px;box-sizing:border-box;padding: 0;margin: 0;}
+.Factory-box .tagInShadow{visibility: none;display: inline-block;min-width: 1px;}
+.Factory-box .tagList{display:none;position: absolute;top:30px;left:-1px;line-height: 30px;border: solid 1px #ccc;background-color: #fff;z-index: 2;}
+.Factory-box .tagList li{padding: 0 5px;}
+.Factory-box .tagList .on{background-color: #e4e4e4;color: #009bca;}
+.Factory-list label{display: inline-block;}
+.Factory-borderBlue {border: solid 2px #00ccff;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
