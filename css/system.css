@@ -20,7 +20,7 @@ input,textarea{border: solid 1px #ececec;}
 .Factory-box .tagInShadow{visibility: none;display: inline-block;min-width: 1px;}
 .Factory-box .tagList{display:none;position: absolute;top:30px;left:-1px;line-height: 30px;border: solid 1px #ccc;background-color: #fff;z-index: 2;}
 .Factory-box .tagList li{padding: 0 5px;}
-.Factory-box .tagList .on{background-color: #e4e4e4;color: #009bca;}
+.Factory-box .tagList .on{background-color: #e4e4e4;color: #009bca;cursor: pointer;}
 .Factory-list label{display: inline-block;}
 .Factory-borderBlue {border: solid 2px #00ccff;}
 

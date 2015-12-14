@@ -255,6 +255,10 @@ define(function(){
 				me.insertBeforeInput(me.createTag({key:$(this).attr("data-id"),value:$(this).text()}));
 				$(me).trigger("tagHide_e");
 			});
+			//结过列表设置样式
+			me.dom.on("mouseover.setTag",".js-tagList-li",function(){
+				$(this).addClass("on").siblings().removeClass("on");
+			});
 		}
 		,init:function(){
 			this.bindEvent();
