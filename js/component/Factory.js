@@ -27,6 +27,7 @@ define(function(){
 		inputFocus:function(){
 			this.getInput().focus();	
 			this.dom.find(".Factory-box").addClass("Factory-borderBlue");
+			return this;
 		},
 		/**
 		*创建tag
@@ -113,9 +114,9 @@ define(function(){
 			me.addDataFocus();
 		},
 		bindEvent:function(){
-			var me = this,timer = null;
+			var me = this,timer = null,blurTimer = null;
 			//获得光标
-			me.dom.find(".Factory-box").on("click",function(){
+			me.dom.find(".Factory-box").on("click._focus",function(){
 				me.inputFocus();
 			});
 			$(me).on("tagHide_e",function(){
@@ -231,13 +232,16 @@ define(function(){
 			.off("blur._keydown")
 			.on("blur._keydown",function(){
 				me.dom.find(".Factory-box").removeClass("Factory-borderBlue");
-				var $t = $(this);
-				$t.off("keydown._addTag keyup._addTag");
-				$(me).trigger("tagHide_e");
+				if(blurTimer){window.clearTimeout(blurTimer);}
+				blurTimer = setTimeout(function(){
+					var $t = $(this);
+					$t.off("keydown._addTag keyup._addTag");
+					$(me).trigger("tagHide_e");
+				},100)
 			});
 
 			//checkbox
-			me.dom.find(".Factory-list").on("click","input[type=checkbox]",function(){console.log(11);
+			me.dom.find(".Factory-list").on("click","input[type=checkbox]",function(){
 				var $t = $(this);
 				if($t.prop("checked")){
 					me.insertBeforeInput(me.createTag({key:$t.attr("data-id"),value:$t.val()}));
@@ -245,7 +249,12 @@ define(function(){
 					me.dom.find(".tagItem[data-id="+$t.attr("data-id")+"]").remove();
 				}
 				
-			})
+			});
+			//点击设置tag
+			me.dom.on("click.setTag",".js-tagList-li",function(){
+				me.insertBeforeInput(me.createTag({key:$(this).attr("data-id"),value:$(this).text()}));
+				$(me).trigger("tagHide_e");
+			});
 		}
 		,init:function(){
 			this.bindEvent();
