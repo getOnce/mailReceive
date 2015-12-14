@@ -35,7 +35,7 @@ define(function(){
 		*/
 		createTag:function(data){
 			var me = this;
-			return '<span class="tagItem" data-id="'+data.key+'">'+data.value+'</span>';
+			return '<span class="tagItem js-tag-item" data-id="'+data.key+'" data-originText="'+data.value+'">'+data.value+'</span>';
 		},
 		//取得tag数据
 		getData:function(arg){
@@ -113,11 +113,47 @@ define(function(){
 			me.clearLabelFocus();
 			me.addDataFocus();
 		},
+		//tag原始的文字
+		setTagOriginText:function(tar,data){
+			$(tar).attr("data-originText",data);
+		},
+		//取得tag原始文字
+		getTagOriginText:function(tar,attr){
+			return $(tar).attr(attr||"data-originText");
+		},
+		//创建编辑dom
+		createEditTagDom:function(data){
+			return '<label><input type="text" value="" placeholder="在这里美化文字"/></label><label><em class="left"><</em><em>'+data+'</em><em>></em></label>'
+		},
 		bindEvent:function(){
 			var me = this,timer = null,blurTimer = null;
 			//获得光标
 			me.dom.find(".Factory-box").on("click._focus",function(){
 				me.inputFocus();
+			});
+			//编辑标签
+			$(me).on("tagEditEvent",function(e,tar){
+				var $t = $(tar).addClass("tagEdit");
+				$t.html(me.createEditTagDom(me.getTagOriginText($t)));
+				$(me).trigger("tagInputFocusEvent",this);
+			});
+			//编辑tag input focus
+			$(me).on("tagInputFocusEvent",function(e,tar){
+				var $t = $(tar);console.log(tar)
+				$t.find("input").focus();
+			});
+			//取消编辑标签
+			$(me).on("cancelTagEditEvent",function(e,tar){
+				var $t = $(tar).removeClass("tagEdit");
+				$t.html($t.find("input").val()+me.getTagOriginText($t));
+			});
+			//编辑标签
+			me.dom.find(".Factory-box").on("click._edit",".js-tag-item",function(){
+				me.dom.find(".tagEdit").each(function(){
+					$(me).trigger("cancelTagEditEvent",this);
+				});
+				$(me).trigger("tagEditEvent",this);
+				return false;
 			});
 			$(me).on("tagHide_e",function(){
 				me.dom.find(".tagList").hide().find(".js-tagList-li").remove();
