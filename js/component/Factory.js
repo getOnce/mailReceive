@@ -1,3 +1,4 @@
+'user strict';
 define(function(){
 	/**
 	*仿邮箱收件人输入框
@@ -23,10 +24,18 @@ define(function(){
 		getTagInShadow:function(){
 			return this.dom.find(".tagInShadow");
 		},
+		//加蓝色边框
+		setBorder:function(){
+			this.dom.find(".Factory-box").addClass("Factory-borderBlue");
+		},
+		//去掉蓝色边框
+		removeBorder:function(){
+			this.dom.find(".Factory-box").removeClass("Factory-borderBlue");
+		},
 		//输入框获得光标
 		inputFocus:function(){
 			this.getInput().focus();	
-			this.dom.find(".Factory-box").addClass("Factory-borderBlue");
+			this.setBorder();
 			return this;
 		},
 		/**
@@ -125,30 +134,89 @@ define(function(){
 		createEditTagDom:function(data){
 			return '<label><input type="text" value="" placeholder="在这里美化文字"/></label><label><em class="left"><</em><em>'+data+'</em><em>></em></label>'
 		},
+		/**
+		*创建编辑后的label
+		*@param tar {object} 标签盒子
+		*/
+		createNewTag:function(tar){
+			var $tar = $(tar).removeClass("tagEdit"),
+			val = $.trim($tar.find("input").val()),
+			origin = $tar.attr("data-originText"),
+			editText = $tar.attr("data-editText");
+			$tar.html(val?(val+"<"+origin+">"):origin).attr("data-editText",val||"");
+			$tar.find("input").val(editText||"");
+		},
 		bindEvent:function(){
 			var me = this,timer = null,blurTimer = null;
 			//获得光标
-			me.dom.find(".Factory-box").on("click._focus",function(){
+			me.dom.find(".Factory-box")
+			.on("click._Factory",function(){
 				me.inputFocus();
 			});
-			//编辑标签
+			/**
+			*编辑标签
+			*@param tar {dom} 标签盒子
+			*/
 			$(me).on("tagEditEvent",function(e,tar){
-				var $t = $(tar).addClass("tagEdit");
+				var $t = $(tar);
+				if($t.hasClass("tagEdit")){
+					return
+				}
+				$t.addClass("tagEdit");
 				$t.html(me.createEditTagDom(me.getTagOriginText($t)));
-				$(me).trigger("tagInputFocusEvent",this);
+				$t
+				.find("input")
+				.off("focus._Factory")
+				.on("focus._Factory",function(e){
+					me.setBorder();
+					$(this)
+					.on("keydown._Factory",function(e){
+						var kc = e.keyCode;
+						if(kc==13){
+							$(me).trigger("tagInputEnter",$t.get(0));
+							me.removeBorder();
+							return;
+						}
+					})
+				})
+				.off("blur._Factory")
+				.on("blur._Factory",function(){
+					me.removeBorder();
+					$(this).off("keydown._Factory");
+					$(me).trigger("cancelTagEditEvent",tar);
+				});
+
+				$(me).trigger("tagInputFocusEvent",tar);
+				$(tar).find("input").val($.trim($(tar).attr("data-editText"))||"");
 			});
 			//编辑tag input focus
 			$(me).on("tagInputFocusEvent",function(e,tar){
-				var $t = $(tar);console.log(tar)
+				var $t = $(tar);
 				$t.find("input").focus();
 			});
+			//编辑tag editInput
+			$(me).on("tagInputEnter",function(e,tar){
+				me.createNewTag(tar);
+			})
 			//取消编辑标签
 			$(me).on("cancelTagEditEvent",function(e,tar){
-				var $t = $(tar).removeClass("tagEdit");
-				$t.html($t.find("input").val()+me.getTagOriginText($t));
+				var $t = $(tar).removeClass("tagEdit js-dbClick"),
+				val = $.trim($t.find("input").val()),
+				origin = me.getTagOriginText($t);
+				$t.attr("data-editText",val||"")
+				.html(val?(val+"<"+origin+">"):origin);
 			});
 			//编辑标签
-			me.dom.find(".Factory-box").on("click._edit",".js-tag-item",function(){
+			me.dom.find(".Factory-box").on("click._Factory",".js-tag-item",function(e){
+				var $tar = $(this);
+				//模拟双击事件
+				if(!$tar.hasClass("js-dbClick")){
+					$tar.addClass("js-dbClick");
+					setTimeout(function(){
+						$tar.removeClass("js-dbClick");
+					},200)
+					return false;
+				}
 				me.dom.find(".tagEdit").each(function(){
 					$(me).trigger("cancelTagEditEvent",this);
 				});
@@ -162,11 +230,11 @@ define(function(){
 			});
 			me
 			.getInput()
-			.off("focus._keydown")
-			.on("focus._keydown",function(){
+			.off("focus._Factory")
+			.on("focus._Factory",function(){
 				var $t = $(this);
-				me.dom.find(".Factory-box").addClass("Factory-borderBlue");
-				$t.off("keydown._addTag").on("keydown._addTag",function(e){
+				me.removeBorder();
+				$t.off("keydown._Factory").on("keydown._Factory",function(e){
 					var code = e.keyCode;
 					switch(code){
 						//退格键
@@ -196,7 +264,7 @@ define(function(){
 						default:;
 					}
 				})
-				.off("keyup._addTag").on("keyup._addTag",function(e){
+				.off("keyup._Factory").on("keyup._Factory",function(e){
 					if(timer){
 						clearTimeout(timer);
 					}
@@ -265,13 +333,13 @@ define(function(){
 					
 				});
 			})
-			.off("blur._keydown")
-			.on("blur._keydown",function(){
+			.off("blur._Factory")
+			.on("blur._Factory",function(){
 				me.dom.find(".Factory-box").removeClass("Factory-borderBlue");
 				if(blurTimer){window.clearTimeout(blurTimer);}
 				blurTimer = setTimeout(function(){
 					var $t = $(this);
-					$t.off("keydown._addTag keyup._addTag");
+					$t.off("keydown._Factory keyup._Factory");
 					$(me).trigger("tagHide_e");
 				},100)
 			});

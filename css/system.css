@@ -12,12 +12,14 @@ input,textarea{border: solid 1px #ececec;}
 .Factory-wrap{padding: 10px 20px 40px 20px;background-color: #fff;}
 .Factory-box{padding: 10px 5px 10px 5px;border:solid 2px #f0f0f0;line-height: 30px;}
 .Factory-box .tagItem{white-space: nowrap;background-color: #d3e7fa;float:left;
-	overflow: hidden;padding: 0 10px; border-radius: 2px;margin: 0 5px;}
-.Factory-box .tagEdit{padding: 0;background-color:rgba(255,255,255,0);}
+	overflow: hidden;padding: 0 10px; border-radius: 2px;margin: 0 5px;cursor: pointer;}
+.Factory-box .tagEdit{padding: 0;background-color:rgba(255,255,255,0);border: solid 1px #ddd;
+height: 28px;line-height: 26px;}
 .Factory-box .tagEdit input{
-	background:#9dd7fe;height: 30px;line-height: 30px;font-size: 14px;border: none;
+	background:#9dd7fe;height: 26px;line-height: 26px;font-size: 14px;border: none;
 	text-indent: 5px;
 }
+.Factory-box .tagEdit em{padding: 0 5px;}
 .Factory-box .delete{background-color:#ee6459;color: #fff;}	
 .Factory-box .tagFactory{position: relative;float:left;
 	display: inline-block;white-space: nowrap;margin-right: -1px;}
